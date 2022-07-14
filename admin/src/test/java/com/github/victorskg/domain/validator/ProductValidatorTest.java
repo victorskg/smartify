@@ -1,6 +1,5 @@
 package com.github.victorskg.domain.validator;
 
-import static com.github.victorskg.common.exception.FieldValidatorExceptionMessage.NON_NULL;
 import static com.github.victorskg.common.exception.FieldValidatorExceptionMessage.NOT_EMPTY_TEXT;
 
 import java.util.stream.Stream;
@@ -20,10 +19,11 @@ import com.github.victorskg.util.MessageReader;
 class ProductValidatorTest {
 
     private static Stream<Arguments> nameArguments() {
-        final var x = MessageReader.read("product.name.notEmpty");
+        final var productNameNotEmptyMessage = MessageReader.read("product.name.notEmpty");
         return Stream.of(
-                Arguments.of(null, x),
-                Arguments.of(" ", x)
+            Arguments.of(null, productNameNotEmptyMessage),
+            Arguments.of(" ", productNameNotEmptyMessage),
+            Arguments.of("", productNameNotEmptyMessage)
         );
     }
 
@@ -35,13 +35,14 @@ class ProductValidatorTest {
                 () -> Product.of(name, "Description", ProductCategory.of("Category")));
         Assertions.assertEquals(expectedMessage, exception.getMessage());
     }
-    
+
     @Test
     @DisplayName("Should not create Product with invalid category")
     void shouldNotCreateProductWithInvalidCategory() {
+        final var productCategoryNotNullMessage = MessageReader.read("product.category.notNull");
         final var exception = Assertions.assertThrowsExactly(FieldValidatorException.class,
                 () -> Product.of("Name", "Description", null));
-        Assertions.assertEquals(NON_NULL.makeMessage("Categoria"), exception.getMessage());
+        Assertions.assertEquals(productCategoryNotNullMessage, exception.getMessage());
     }
 
     @Test
@@ -51,7 +52,5 @@ class ProductValidatorTest {
                 () -> Product.of("Name", "", ProductCategory.of("Category")));
         Assertions.assertEquals(NOT_EMPTY_TEXT.makeMessage("Descrição"), exception.getMessage());
     }
-
-    
 
 }

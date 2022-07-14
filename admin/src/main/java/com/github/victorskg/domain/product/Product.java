@@ -3,6 +3,7 @@ package com.github.victorskg.domain.product;
 import java.util.UUID;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.github.victorskg.domain.BaseDomain;
 import com.github.victorskg.domain.product.category.ProductCategory;
@@ -16,7 +17,10 @@ public class Product extends BaseDomain<Product> {
 
     @NotBlank(message = "{product.name.notEmpty}")
     private String name;
+    
     private String description;
+
+    @NotNull(message = "{product.category.notNull}")
     private ProductCategory category;
 
     private Product(final String name, final String description, final ProductCategory category) {
