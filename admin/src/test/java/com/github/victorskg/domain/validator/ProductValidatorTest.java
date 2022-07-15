@@ -40,7 +40,7 @@ class ProductValidatorTest {
     @ParameterizedTest(name = "Should not create Product with invalid name: {0}")
     void shouldNotCreateProductWithInvalidName(final String name, final String expectedMessage) {
         final var exception = Assertions.assertThrowsExactly(FieldValidatorException.class,
-                () -> Product.of(name, "Description", ProductCategory.of("Category")));
+                () -> Product.builder(name, ProductCategory.of("Category")).build());
         Assertions.assertEquals(expectedMessage, exception.getMessage());
     }
 
@@ -49,7 +49,7 @@ class ProductValidatorTest {
     void shouldNotCreateProductWithInvalidCategory() {
         final var productCategoryNotNullMessage = MessageReader.read("product.category.notNull");
         final var exception = Assertions.assertThrowsExactly(FieldValidatorException.class,
-                () -> Product.of("Name", "Description", null));
+                () -> Product.builder("Name", null).build());
         Assertions.assertEquals(productCategoryNotNullMessage, exception.getMessage());
     }
 
@@ -58,7 +58,7 @@ class ProductValidatorTest {
     @ParameterizedTest(name = "Should not create Product with invalid description: {0}")
     void shouldNotCreateProductWithInvalidDescription(final String description, final String expectedMessage) {
         final var exception = Assertions.assertThrowsExactly(FieldValidatorException.class,
-                () -> Product.of("Name", description, ProductCategory.of("Category")));
+                () -> Product.builder("Name", ProductCategory.of("Category")).description(description).build());
         Assertions.assertEquals(expectedMessage, exception.getMessage());
     }
 
