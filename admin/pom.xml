@@ -15,6 +15,9 @@
     <skipITs>true</skipITs>
     <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
     <lombok.version>1.18.22</lombok.version>
+    <!--Sonar-->
+    <sonar.organization>victorskg</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties>
   <dependencyManagement>
     <dependencies>
