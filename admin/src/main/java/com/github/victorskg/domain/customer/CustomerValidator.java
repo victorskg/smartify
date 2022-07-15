@@ -27,7 +27,7 @@ public class CustomerValidator {
 
     private static void validatePhone(String phone) {
         if (nonNull(phone)) {
-            BaseValidator.textPattern(phone, Pattern.compile("[0-9]{8,9}"), "Telefone");
+            BaseValidator.textPattern(phone, Pattern.compile("\\d{8,9}"), "Telefone");
         }
     }
 
