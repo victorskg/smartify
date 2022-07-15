@@ -1,9 +1,8 @@
 package com.github.victorskg.domain.validator;
 
-import static com.github.victorskg.common.exception.FieldValidatorExceptionMessage.NOT_EMPTY_TEXT;
-
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,6 +26,15 @@ class ProductValidatorTest {
         );
     }
 
+    private static Stream<Arguments> descriptionArguments() {
+        final var productDescriptionOptionalNotEmptyMessage = MessageReader.read("product.description.optionalNotEmpty");
+        return Stream.of(
+            Arguments.of("", productDescriptionOptionalNotEmptyMessage),
+            Arguments.of(" a ", productDescriptionOptionalNotEmptyMessage),
+            Arguments.of(RandomStringUtils.randomAlphabetic(256), productDescriptionOptionalNotEmptyMessage)
+        );
+    }
+
     @MethodSource("nameArguments")
     @DisplayName("Should not create Product with invalid name")
     @ParameterizedTest(name = "Should not create Product with invalid name: {0}")
@@ -45,12 +53,13 @@ class ProductValidatorTest {
         Assertions.assertEquals(productCategoryNotNullMessage, exception.getMessage());
     }
 
-    @Test
+    @MethodSource("descriptionArguments")
     @DisplayName("Should not create Product with invalid description")
-    void shouldNotCreateProductWithInvalidDescription() {
+    @ParameterizedTest(name = "Should not create Product with invalid description: {0}")
+    void shouldNotCreateProductWithInvalidDescription(final String description, final String expectedMessage) {
         final var exception = Assertions.assertThrowsExactly(FieldValidatorException.class,
-                () -> Product.of("Name", "", ProductCategory.of("Category")));
-        Assertions.assertEquals(NOT_EMPTY_TEXT.makeMessage("Descrição"), exception.getMessage());
+                () -> Product.of("Name", description, ProductCategory.of("Category")));
+        Assertions.assertEquals(expectedMessage, exception.getMessage());
     }
 
 }
