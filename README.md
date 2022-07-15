@@ -1,8 +1,7 @@
-# smartfy-admin Project
+# Smartify Admin Project
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
-
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=victorskg_smartify-admin)](https://sonarcloud.io/summary/new_code?id=victorskg_smartify-admin)
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=victorskg_smartify-admin)
 
 ## Running the application in dev mode
 
