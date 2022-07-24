@@ -20,7 +20,6 @@ import com.github.victorskg.domain.customer.CustomerService;
 class CustomerServiceTest {
 
     private final CustomerGateway gateway;
-
     private final CustomerService service;
 
     CustomerServiceTest() {
@@ -50,7 +49,6 @@ class CustomerServiceTest {
     @Test
     @DisplayName("Should not update non existent Customer")
     void shouldNotUpdateNonExistentCustomer() {
-        Mockito.when(gateway.update(any(Customer.class))).then(returnsFirstArg());
         Mockito.when(gateway.findByUuid(any(UUID.class))).thenReturn(Optional.empty());
         final var customer = Customer.of(UUID.randomUUID(), "Customer Updated", "99999999");
         final var exception = Assertions.assertThrowsExactly(BusinessException.class, () -> service.update(customer));
@@ -61,7 +59,7 @@ class CustomerServiceTest {
     @Test
     @DisplayName("Should get Customer")
     void shouldGetCustomer() {
-        final var customer = Customer.of(UUID.randomUUID(), "Customer Updated", "99999999");
+        final var customer = Customer.of(UUID.randomUUID(), "Customer", "99999999");
         Mockito.when(gateway.findByUuid(any(UUID.class))).thenReturn(Optional.of(customer));
         final var customerFromService = service.get(customer.getUuid());
         Assertions.assertEquals(customer, customerFromService);
