@@ -40,7 +40,8 @@ class CustomerServiceTest {
     @DisplayName("Should update Customer")
     void shouldUpdateCustomer() {
         Mockito.when(gateway.update(any(Customer.class))).then(returnsFirstArg());
-        final var customer =  Customer.builder().uuid(UUID.randomUUID()).name("Customer Updated").phone("999999999999").build();
+        final var customer = Customer.builder().uuid(UUID.randomUUID()).name("Customer Updated").phone("999999999999")
+                .build();
         Mockito.when(gateway.findByUuid(any(UUID.class))).thenReturn(Optional.of(customer));
         final var savedCustomer = service.update(customer);
         Assertions.assertEquals(customer, savedCustomer);
@@ -50,12 +51,13 @@ class CustomerServiceTest {
     @DisplayName("Should not update non existent Customer")
     void shouldNotUpdateNonExistentCustomer() {
         Mockito.when(gateway.findByUuid(any(UUID.class))).thenReturn(Optional.empty());
-        final var customer =  Customer.builder().uuid(UUID.randomUUID()).name("Customer Updated").phone("999999999999").build();
+        final var customer = Customer.builder().uuid(UUID.randomUUID()).name("Customer Updated").phone("999999999999")
+                .build();
         final var exception = Assertions.assertThrowsExactly(BusinessException.class, () -> service.update(customer));
         Assertions.assertEquals(ENTITY_NOT_FOUND_BY_ID.makeMessage("Cliente", customer.getUuid()),
                 exception.getMessage());
     }
-    
+
     @Test
     @DisplayName("Should get Customer")
     void shouldGetCustomer() {
@@ -71,8 +73,7 @@ class CustomerServiceTest {
         Mockito.when(gateway.findByUuid(any(UUID.class))).thenReturn(Optional.empty());
         final var customerUUID = UUID.randomUUID();
         final var exception = Assertions.assertThrowsExactly(BusinessException.class, () -> service.get(customerUUID));
-        Assertions.assertEquals(ENTITY_NOT_FOUND_BY_ID.makeMessage("Cliente",customerUUID),
-                exception.getMessage());
+        Assertions.assertEquals(ENTITY_NOT_FOUND_BY_ID.makeMessage("Cliente", customerUUID), exception.getMessage());
     }
-    
+
 }

@@ -78,7 +78,7 @@ class SupplierServiceTest {
         Assertions.assertEquals(ENTITY_NOT_FOUND_BY_ID.makeMessage("Fornecedor", supplier.getUuid()),
                 exception.getMessage());
     }
-    
+
     @Test
     @DisplayName("Should get Supplier")
     void shouldGetSupplier() {
@@ -94,8 +94,8 @@ class SupplierServiceTest {
         Mockito.when(gateway.findByUuid(any(UUID.class))).thenReturn(Optional.empty());
         final var supplierUUID = UUID.randomUUID();
         final var exception = Assertions.assertThrowsExactly(BusinessException.class, () -> service.get(supplierUUID));
-        Assertions.assertEquals(ENTITY_NOT_FOUND_BY_ID.makeMessage("Fornecedor",supplierUUID),
+        Assertions.assertEquals(ENTITY_NOT_FOUND_BY_ID.makeMessage("Fornecedor", supplierUUID),
                 exception.getMessage());
     }
-    
+
 }

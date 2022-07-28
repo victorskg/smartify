@@ -22,7 +22,7 @@ public class ProductCategoryService {
         return gateway.update(productCategory);
     }
 
-    private ProductCategory get(final UUID uuid) {
+    public ProductCategory get(final UUID uuid) {
         return gateway.findByUuid(uuid)
                 .orElseThrow(() -> new BusinessException(ENTITY_NOT_FOUND_BY_ID.makeMessage("Categoria de Produto", uuid)));
     }

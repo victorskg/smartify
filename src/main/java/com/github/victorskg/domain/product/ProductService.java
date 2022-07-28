@@ -17,12 +17,12 @@ public class ProductService {
         return gateway.create(product);
     }
 
-    public Product execute(final Product product) {
+    public Product update(final Product product) {
         get(product.getUuid());
         return gateway.update(product);
     }
 
-    private Product get(final UUID uuid) {
+    public Product get(final UUID uuid) {
         return gateway.findByUuid(uuid)
                 .orElseThrow(() -> new BusinessException(ENTITY_NOT_FOUND_BY_ID.makeMessage("Produto", uuid)));
     }
