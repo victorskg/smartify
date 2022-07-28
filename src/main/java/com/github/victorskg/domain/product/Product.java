@@ -39,12 +39,4 @@ public class Product extends BaseDomain<Product> {
         validateSelf();
     }
 
-    private static ProductBuilder builder() {
-        return new ProductBuilder();
-    }
-
-    public static ProductBuilder builder(final String name, final ProductCategory productCategory) {
-        return builder().name(name).category(productCategory);
-    }
-
 }

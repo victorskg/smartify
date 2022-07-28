@@ -2,8 +2,14 @@ package com.github.victorskg.domain.customer;
 
 import java.util.UUID;
 
-import com.github.victorskg.domain.BaseDomain;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
+import com.github.victorskg.domain.BaseDomain;
+import com.github.victorskg.domain.vo.Phone;
+
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -11,29 +17,19 @@ import lombok.Getter;
 @EqualsAndHashCode(callSuper = true)
 public class Customer extends BaseDomain<Customer> {
 
+    @NotBlank(message = "{customer.name.notBlank}")
+    @Size(message = "{customer.name.size}", min = 3, max = 255)
     private String name;
-    private String phone;
 
-    private Customer(final String name, final String phone) {
-        super(null);
-        this.name = name;
-        this.phone = phone;
-        validateSelf();
-    }
+    @Valid
+    private Phone phone;
 
+    @Builder
     private Customer(final UUID uuid, final String name, final String phone) {
         super(uuid);
         this.name = name;
-        this.phone = phone;
+        this.phone = new Phone(phone);
         validateSelf();
-    }
-
-    public static Customer of(final String name, final String phone) {
-        return CustomerValidator.validate(new Customer(name, phone));
-    }
-
-    public static Customer of(final UUID uuid, final String name, final String phone) {
-        return CustomerValidator.validate(new Customer(uuid, name, phone));
     }
 
 }

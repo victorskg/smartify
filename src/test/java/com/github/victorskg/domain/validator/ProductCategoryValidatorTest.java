@@ -18,8 +18,8 @@ class ProductCategoryValidatorTest {
 
     private static Stream<Arguments> nameArguments() {
         return Stream.of(
-                Arguments.of(null, NON_NULL.makeMessage("Nome")),
-                Arguments.of(" ", NOT_EMPTY_TEXT.makeMessage("Nome"))
+            Arguments.of(null, NON_NULL.makeMessage("Nome")),
+            Arguments.of(" ", NOT_EMPTY_TEXT.makeMessage("Nome"))
         );
     }
 

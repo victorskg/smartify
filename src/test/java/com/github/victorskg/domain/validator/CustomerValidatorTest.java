@@ -1,11 +1,8 @@
 package com.github.victorskg.domain.validator;
 
-import static com.github.victorskg.common.exception.FieldValidatorExceptionMessage.NON_NULL;
-import static com.github.victorskg.common.exception.FieldValidatorExceptionMessage.NOT_EMPTY_TEXT;
-import static com.github.victorskg.common.exception.FieldValidatorExceptionMessage.TEXT_PATTERN;
-
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,20 +11,26 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import com.github.victorskg.common.exception.FieldValidatorException;
 import com.github.victorskg.domain.customer.Customer;
+import com.github.victorskg.util.MessageReader;
 
 class CustomerValidatorTest {
 
     private static Stream<Arguments> nameArguments() {
+        final var customerNameNotEmptyMessage = MessageReader.read("customer.name.notBlank");
+        final var customerNameSizeMessage = MessageReader.read("customer.name.size");
         return Stream.of(
-                Arguments.of(null, NON_NULL.makeMessage("Nome")),
-                Arguments.of(" ", NOT_EMPTY_TEXT.makeMessage("Nome"))
+            Arguments.of(null, customerNameNotEmptyMessage),
+            Arguments.of("   ", customerNameNotEmptyMessage),
+            Arguments.of(RandomStringUtils.randomAlphabetic(2), customerNameSizeMessage),
+            Arguments.of(RandomStringUtils.randomAlphabetic(256), customerNameSizeMessage)
         );
     }
 
     private static Stream<Arguments> phoneArguments() {
+        final var phonePatternMessage = MessageReader.read("phone.value.pattern");
         return Stream.of(
-                Arguments.of("9999999", TEXT_PATTERN.makeMessage("Telefone")),
-                Arguments.of("9999999999", TEXT_PATTERN.makeMessage("Telefone"))
+            Arguments.of("99999999", phonePatternMessage),
+            Arguments.of("999999999", phonePatternMessage)
         );
     }
 
@@ -36,7 +39,7 @@ class CustomerValidatorTest {
     @ParameterizedTest(name = "Should not create Customer with invalid name: {0}")
     void shouldNotCreateCustomerWithInvalidName(final String name, final String expectedMessage) {
         final var exception = Assertions.assertThrows(FieldValidatorException.class,
-                () -> Customer.of(name, "999999999"));
+                () -> Customer.builder().name(name).phone("999999999999").build());
         Assertions.assertEquals(expectedMessage, exception.getMessage());
     }
 
@@ -45,7 +48,7 @@ class CustomerValidatorTest {
     @ParameterizedTest(name = "Should not create Customer with invalid phone: {0}")
     void shouldNotCreateCustomerWithInvalidPhone(final String phone, final String expectedMessage) {
         final var exception = Assertions.assertThrows(FieldValidatorException.class,
-                () -> Customer.of("Customer", phone));
+                () -> Customer.builder().name("Customer").phone(phone).build());
         Assertions.assertEquals(expectedMessage, exception.getMessage());
     }
 
